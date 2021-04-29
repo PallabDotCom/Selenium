@@ -1,0 +1,30 @@
+Creating Maven Project
+Organizing Page objects
+DataDriving/Parameterizing Tests
+Converting into TestNG Framework
+Log4j API for looging inside framework
+TestNG Listeners
+POM XML
+testNG XML
+Extent reports HTML for Test results
+Screenshot
+Jenkins
+
+Resources Folder should contain :
+Base -> Where driver details, input file, wait times, windows etc can be mentioned
+Listeners -> Pass fail status screenshot reporing stuffs can me mentioned
+data.Properties-> Should contain all the global variables
+ExtentRepoterNG-> The main code should be here.
+Log4j2.xml
+
+Log foler will have logs created by Log4j2 after execution.
+Reports folder will have html report created by ExtentRepots after execution.
+Reports folder will have screenshots created by TestNG Listeners.
+
+
+All the pageObjects should be under src/main/java-> package
+All the testcases should be under src/test/java->package.
+
+
+
+

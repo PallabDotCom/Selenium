@@ -1,0 +1,79 @@
+//Reporting testcase status from listeners and using threadsafe for parallel execution
+//We should add dependencies in POM.XML
+
+
+
+
+//TestNG Listener Part
+
+public class Listeners extends base implements ITestListeners{
+
+ExtentTest test;
+ExtentReports extent=ExtentReporterNG.getReportObject();
+ThreadLocal<ExtentTest> extentTest=new ThreadLocal<ExtentTest>();
+
+public void onTestStart(ITestResult result) {
+	test=extent.createTest(result.getMethod().getMethodName());
+	extentTest.set(test);		
+	}
+public void onTestSuccess(ITestResult result) {
+	extentTest.get().log(Status.Pass, "Test Passed");
+		
+	}
+public void onTestFailure(ITestResult result) {
+	extentTest.get().fail(result.getThrowable());
+
+// Get Screenshot & attach in report
+	WebDriver driver = null;
+	String testMethodName=result.getMethod().getMethodName();
+	try{
+		driver=(WebDriver)result.getTestClass().getRealClass().getDeclaredField("driver").get(result.getInstance());
+	}catch(Exception e) {
+	}
+	try{
+		extentTest.get().addScreenCaptureFromPath(getScreenshotPath(testMethodName,driver),result.getMethod().getMethodName())	
+		
+	}
+	catch(IOException e){
+		e.printStackTrace();
+	}
+		
+     }
+
+public void onFinish(ITestContext arg0) {
+	extent.flush();
+	}
+
+}
+
+
+//Your Base class should have below for screenshot- 
+
+public String getScreenshotPath(String testCaseName, WebDriver driver) throws IOException
+{
+TakesScreenshot ts = (TakesScreenshot) driver;
+File source= ts.getScreenshotAs(OutputType.FILE);
+String destinationFile = system.getProperty("user.dir")+"\\reports\\"+testCaseName+".png";
+FileUtils.copyFile(source,new File(destinationFile);
+return destinationFile;
+}
+
+
+
+//Your ExtentReporterNG class should have below code- 
+
+public class ExtentReporterNG {
+
+	Static ExtentReports extent;
+
+	public static ExtentReports getReportObject()
+	{
+		String path = System.getProperty("user.dir") + "\\reports\\index.html";
+		ExtentSparkReporter reporter = new ExtentSparkReporter(path);
+		reporter.config().setReportName("Web Automation Results");
+		reporter.config().setDocumentTitle("Test Results");
+		extent = new ExtentReports();
+		extent.attachReporter(reporter);
+		extent.setSystemInfo("Tester", "Pallab");
+		return extent;
+	}

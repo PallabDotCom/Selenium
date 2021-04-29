@@ -1,0 +1,36 @@
+// Have to add extent report dependency in Maven POM . Also, we need Selenium & testNg Jars to run code
+//2 Class : ExtentReports , ExtentSparkReporter
+// Below code is for reporting. It has not worked last time as unable to import ExtentSparkReporter.
+
+public class ExtendReports {
+
+	ExtentReports extent;
+
+	@BeforeTest
+
+	public void config()
+	{
+		// ExtentReports , ExtentSparkReporter
+		String path = System.getProperty("user.dir") + "\\reports\\index.html";
+		ExtentSparkReporter reporter = new ExtentSparkReporter(path);
+		reporter.config().setReportName("Web Automation Results");
+		reporter.config().setDocumentTitle("Test Results");
+		extent = new ExtentReports();
+		extent.attachReporter(reporter);
+		extent.setSystemInfo("Tester", "Pallab");
+	}
+
+	@Test
+	public void initialDemo()
+	{
+		ExtentTest test = extent.createTest("Initial Demo");
+		System.setProperty("webdriver.chrome.driver", "C://chromedriver.exe");
+		WebDriver driver = new ChromeDriver();
+		driver.get("https://rahulshettyacademy.com");
+		System.out.println(driver.getTitle());
+		driver.close();
+		// test.fail("Result do not match");
+		extent.flush();
+	}
+}
+

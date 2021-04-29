@@ -1,0 +1,15 @@
+Creating JDBC connection & sending data to website after collecting from mySQL DB
+// Mysql-connector-java Jar required
+//Code under class for mysql DB:
+//DriverManager.getConnection(url, username, password)
+//Connection URL: “jdbc:mysql://”+host+”:”+port+”/databasename”;
+Connection con=DriverManager.getConnection(“jdbc:mysql://”+”localhost”+”:”+”3306”+”/demo”, pallab, pallab2021) //this is destination
+Statement s=Con.createStatemtn(); // this is path
+Resultset rs=s.executeQuery(“SQL Query XYZ which will retrive username and password for a credit card”);
+While(rs.next()) // if data is available in next index
+{
+Webdriver driver= new chromedriver();
+Driver.get(https://salesforce.com);
+Driver.findelement(by.xpath(“//[@id=username]”).sendkeys(rs.getstring(“username column of database”)));
+Driver.findelement(by.xpath(“//[@id=password]”).sendkeys(rs.getstring(“password column of database”)));
+}
